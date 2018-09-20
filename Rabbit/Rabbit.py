@@ -1,4 +1,5 @@
 import pygame
+from pygame.locals import *
 import math
 import random
 
@@ -8,9 +9,10 @@ width, height = 640, 480
 screen = pygame.display.set_mode((width,height))
 
 # set keys to record if player press down the key: WASD
+WASD = [K_w, K_a, K_s, K_d]
 keys = [False, False, False, False]
 # current player position
-playerpos = [100, 100]
+playerpos = [200, 150]
 # accuracy variable, record number of shoots and shooted animals
 acc = [0, 0]
 # track arrow
@@ -42,11 +44,30 @@ while True:
     screen.blit(castle_img, (0, 240))
     screen.blit(castle_img, (0, 345))
     # load rabbit pic
-    screen.blit(rabbit_img, (100, 100))
+    position = pygame.mouse.get_pos()
+    angle = math.atan2(position[1] - (playerpos[1] + 32), position[0] - (playerpos[0] + 26))
+    playerrot = pygame.transform.rotate(rabbit_img, 360 - angle * 57.29)
+    playerpos1 = (playerpos[0] - playerrot.get_rect().width / 2, playerpos[1] - playerrot.get_rect().height / 2)
+    screen.blit(playerrot, playerpos1)
     # update screen
     pygame.display.flip()
-    # check some events, if has QUIT command, then exit
+
+    # check some events
     for event in pygame.event.get():
+        # if has QUIT command, then exit
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
+        # for WASD key press events
+        if event.type == pygame.KEYDOWN:
+            if event.key in WASD:
+                keys[WASD.index(event.key)] = True
+        if event.type == pygame.KEYUP:
+            if event.key in WASD:
+                keys[WASD.index(event.key)] = False
+
+    # move the player
+    if keys[0]: playerpos[1] -= 5
+    elif keys[2]: playerpos[1] += 5
+    if keys[1]: playerpos[0] -= 5
+    elif keys[3]: playerpos[0] += 5
