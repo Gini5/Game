@@ -57,6 +57,7 @@ while True:
     # draw bullet
     for bullet in bullets:
         index = 0
+
         velx = math.cos(bullet[0])*10   # calculate bullet to player delta x
         vely = math.sin(bullet[0])*10   # calculate bullet to player delta y
         # calculate new bullet position
