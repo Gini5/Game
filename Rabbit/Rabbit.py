@@ -13,7 +13,7 @@ WASD = [K_w, K_a, K_s, K_d]
 keys = [False, False, False, False]
 # current player position
 playerpos = [200, 150]
-# accuracy variable, record number of shoots and shooted animals
+# accuracy variable, record number of shooted animals and shoots
 acc = [0, 0]
 # track bullet: each bullet contains [clickposition to playerposition tan,playerposition x, playerposition y]]
 bullets = []
@@ -21,7 +21,7 @@ bullets = []
 badtimer = 100
 badtimer1 = 0
 badguys = [[640, 100]]
-healthvalue = 194
+healthvalue = 194   #according to width of health bar image
 
 # initialize sound
 pygame.mixer.init()
@@ -33,8 +33,27 @@ castle_img = pygame.image.load("resources/images/castle.png")
 bullet_img = pygame.image.load("resources/images/bullet.png")
 badguy_img = pygame.image.load("resources/images/badguy.png")
 badguy_img2 = badguy_img
+healthbar_img = pygame.image.load("resources/images/healthbar.png")
+health_img = pygame.image.load("resources/images/health.png")
+gameover_img = pygame.image.load("resources/images/gameover.png")
+youwin_img = pygame.image.load("resources/images/youwin.png")
 
-while True:
+# load sound
+hit = pygame.mixer.Sound("resources/audio/explode.wav")
+enemy = pygame.mixer.Sound("resources/audio/enemy.wav")
+shoot = pygame.mixer.Sound("resources/audio/shoot.wav")
+hit.set_volume(0.05)
+enemy.set_volume(0.05)
+shoot.set_volume(0.05)
+
+# load bgm
+pygame.mixer.music.load('resources/audio/moonlight.wav')
+pygame.mixer.music.play(-1, 0.0)
+pygame.mixer.music.set_volume(0.25)
+
+running = True
+exitcode = False
+while running:
     # set background to color gray(RGB)
     screen.fill((224,226,229))
     # add grass and castles to backgrounds
@@ -92,6 +111,7 @@ while True:
         badrect.top = bg[1]
         badrect.left = bg[0]
         if badrect.left < 64:
+            hit.play()
             healthvalue -= random.randint(5,20)
             badguys.pop(index_badguy)
         index_arrow = 0
@@ -100,12 +120,25 @@ while True:
             bulletrect.top = bullet[2]
             bulletrect.left = bullet[1]
             if badrect.colliderect(bulletrect):
-                acc[0] += 1     #shoots +1
+                enemy.play()
+                acc[0] += 1     # animal shooted +1
                 badguys.pop(index_badguy)
                 bullets.pop(index_arrow)
         index_badguy += 1
     for bg in badguys:
         screen.blit(badguy_img, bg)
+
+    #add timer to display time
+    font = pygame.font.Font(None, 24)
+    survivedtext = font.render(str((90000-pygame.time.get_ticks())//60000)+": "+
+                               str((90000-pygame.time.get_ticks())//1000%60).zfill(2), True, (0, 0, 0))
+    textRect = survivedtext.get_rect()
+    textRect.topright = [635,5]
+    screen.blit(survivedtext, textRect)
+    # add health bar
+    screen.blit(healthbar_img, (5, 5))
+    for h in range(healthvalue):
+        screen.blit(health_img, (h+8, 8))
 
     # update screen
     pygame.display.flip()
@@ -125,8 +158,9 @@ while True:
                 keys[WASD.index(event.key)] = False
         #  when mouse click, shoot a bullet
         if event.type == pygame.MOUSEBUTTONDOWN:
+            shoot.play()
             position = pygame.mouse.get_pos()
-            acc[1] += 1
+            acc[1] += 1     #shoots +1
             bullets.append([math.atan2(position[1]-(playerpos1[1]+32), position[0]-(playerpos1[0]+26)),
 						   playerpos1[0]+32, playerpos1[1]+26])
 
@@ -136,3 +170,46 @@ while True:
     if keys[1]: playerpos[0] -= 5
     elif keys[3]: playerpos[0] += 5
     badtimer -= 1
+
+    # judge win or lose:
+    # if time reaches 90s, stop the game
+    if pygame.time.get_ticks() >= 90000:
+        running = False
+        exitcode = True
+    # if health value is lower than 0, stop the game
+    if healthvalue <= 0:
+        running = False
+        exitcode = False
+    # calculate the accuracy
+    if acc[1] != 0:
+        accuracy = acc[0]/acc[1]*100
+        accuracy = ("%.2f" % accuracy)
+    else:
+        accuracy = 0
+
+# handle win or lose situation
+if not exitcode:
+    pygame.font.init()
+    font = pygame.font.Font(None, 24)
+    text = font.render("Accuracy: " + str(accuracy) + "%", True, (255, 0, 0))
+    textRect = text.get_rect()
+    textRect.centerx = screen.get_rect().centerx
+    textRect.centery = screen.get_rect().centery + 24
+    screen.blit(gameover_img, (0, 0))
+    screen.blit(text, textRect)
+else:
+    pygame.font.init()
+    font = pygame.font.Font(None, 24)
+    text = font.render("Accuracy: "+accuracy+"%", True, (0, 255, 0))
+    textRect = text.get_rect()
+    textRect.centerx = screen.get_rect().centerx
+    textRect.centery = screen.get_rect().centery + 24
+    screen.blit(youwin_img, (0, 0))
+    screen.blit(text, textRect)
+
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            exit()
+    pygame.display.flip()
