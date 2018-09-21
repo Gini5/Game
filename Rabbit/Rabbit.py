@@ -31,6 +31,8 @@ rabbit_img = pygame.image.load("resources/images/dude.png")
 grass_img = pygame.image.load("resources/images/grass.png")
 castle_img = pygame.image.load("resources/images/castle.png")
 bullet_img = pygame.image.load("resources/images/bullet.png")
+badguy_img = pygame.image.load("resources/images/badguy.png")
+badguy_img2 = badguy_img
 
 while True:
     # set background to color gray(RGB)
@@ -44,12 +46,14 @@ while True:
     screen.blit(castle_img, (0, 135))
     screen.blit(castle_img, (0, 240))
     screen.blit(castle_img, (0, 345))
+
     # load rabbit pic, rotate according to mouse position
     position = pygame.mouse.get_pos()
     angle = math.atan2(position[1] - (playerpos[1] + 32), position[0] - (playerpos[0] + 26))
     playerrot = pygame.transform.rotate(rabbit_img, 360 - angle * 57.29)
     playerpos1 = (playerpos[0] - playerrot.get_rect().width / 2, playerpos[1] - playerrot.get_rect().height / 2)
     screen.blit(playerrot, playerpos1)
+
     # draw bullet
     for bullet in bullets:
         index = 0
@@ -68,6 +72,40 @@ while True:
             projectile = bullets[0]
             arrow = pygame.transform.rotate(bullet_img, 360-projectile[0]*57.29)
             screen.blit(arrow, (projectile[1], projectile[2]))
+
+    # display bad guys
+    # if badtimer is 0, create a badguy and reset timer to 0
+    if badtimer == 0:
+        badguys.append([640,random.randint(50, 430)])
+        badtimer = 100 - (badtimer1*2)
+        if badtimer1 >= 35:
+            badtimer1 = 35
+        else:
+            badtimer1 += 5
+    index_badguy = 0
+    for bg in badguys:
+        if bg[0] < -64:
+            badguys.pop(index_badguy)
+        bg[0] -= 7
+        badrect = pygame.Rect(badguy_img.get_rect())
+        badrect.top = bg[1]
+        badrect.left = bg[0]
+        if badrect.left < 64:
+            healthvalue -= random.randint(5,20)
+            badguys.pop(index_badguy)
+        index_arrow = 0
+        for bullet in bullets:
+            bulletrect = pygame.Rect(bullet_img.get_rect())
+            bulletrect.top = bullet[2]
+            bulletrect.left = bullet[1]
+            if badrect.colliderect(bulletrect):
+                acc[0] += 1     #shoots +1
+                badguys.pop(index_badguy)
+                bullets.pop(index_arrow)
+        index_badguy += 1
+    for bg in badguys:
+        screen.blit(badguy_img, bg)
+
     # update screen
     pygame.display.flip()
 
@@ -96,3 +134,4 @@ while True:
     elif keys[2]: playerpos[1] += 5
     if keys[1]: playerpos[0] -= 5
     elif keys[3]: playerpos[0] += 5
+    badtimer -= 1
