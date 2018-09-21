@@ -28,7 +28,7 @@ def startgame():
     # set move speed
     bulletspeed = 10
     badguyspeed = 5
-
+    arialfont = 'arial'
     # initialize sound
     pygame.mixer.init()
 
@@ -136,7 +136,7 @@ def startgame():
             screen.blit(badguy_img, bg)
 
         #add timer to display time
-        font = pygame.font.SysFont('arial', 24)
+        font = pygame.font.SysFont(arialfont, 24)
         survivedtext = font.render(str((90-int(dt))//60)+": "+
                                    str((90-int(dt))%60).zfill(2), True, (0, 0, 0))
         textRect = survivedtext.get_rect()
@@ -146,6 +146,13 @@ def startgame():
         screen.blit(healthbar_img, (5, 5))
         for h in range(healthvalue):
             screen.blit(health_img, (h+8, 8))
+
+        # display guide
+        font = pygame.font.SysFont(arialfont, 22)
+        text = font.render("Use WSAD to move ↑↓←→", True, (255, 255, 255))
+        textRect = text.get_rect()
+        textRect.topright = [560,5]
+        screen.blit(text, textRect)
 
         # update screen
         pygame.display.flip()
@@ -197,7 +204,7 @@ def startgame():
     # handle win or lose situation
     if not exitcode:
         pygame.font.init()
-        font = pygame.font.SysFont('arial', 24)
+        font = pygame.font.SysFont(arialfont, 24)
         acctext = font.render("Accuracy: " + str(accuracy) + "%", True, (255, 0, 0))
         acctextRect = acctext.get_rect()
         acctextRect.centerx = screen.get_rect().centerx
@@ -206,7 +213,7 @@ def startgame():
         screen.blit(acctext, acctextRect)
     else:
         pygame.font.init()
-        font = pygame.font.SysFont('arial', 24)
+        font = pygame.font.SysFont(arialfont, 24)
         text = font.render("Accuracy: "+accuracy+"%", True, (0, 255, 0))
         textRect = text.get_rect()
         textRect.centerx = screen.get_rect().centerx
