@@ -4,8 +4,6 @@ import math
 import random
 import time
 
-
-
 def startgame():
     # initilize the game and set display window
     pygame.init()
@@ -27,6 +25,9 @@ def startgame():
     badtimer1 = 0
     badguys = [[640, 100]]
     healthvalue = 194   #according to width of health bar image
+    # set move speed
+    bulletspeed = 10
+    badguyspeed = 5
 
     # initialize sound
     pygame.mixer.init()
@@ -83,9 +84,8 @@ def startgame():
         # draw bullet
         for bullet in bullets:
             index = 0
-
-            velx = math.cos(bullet[0])*10   # calculate bullet to player delta x
-            vely = math.sin(bullet[0])*10   # calculate bullet to player delta y
+            velx = math.cos(bullet[0])*bulletspeed   # calculate bullet to player delta x
+            vely = math.sin(bullet[0])*bulletspeed   # calculate bullet to player delta y
             # calculate new bullet position
             bullet[1] += velx
             bullet[2] += vely
@@ -113,7 +113,7 @@ def startgame():
         for bg in badguys:
             if bg[0] < -64:
                 badguys.pop(index_badguy)
-            bg[0] -= 7
+            bg[0] -= badguyspeed
             badrect = pygame.Rect(badguy_img.get_rect())
             badrect.top = bg[1]
             badrect.left = bg[0]
@@ -136,7 +136,7 @@ def startgame():
             screen.blit(badguy_img, bg)
 
         #add timer to display time
-        font = pygame.font.Font(None, 24)
+        font = pygame.font.SysFont('arial', 24)
         survivedtext = font.render(str((90-int(dt))//60)+": "+
                                    str((90-int(dt))%60).zfill(2), True, (0, 0, 0))
         textRect = survivedtext.get_rect()
@@ -197,7 +197,7 @@ def startgame():
     # handle win or lose situation
     if not exitcode:
         pygame.font.init()
-        font = pygame.font.Font(None, 24)
+        font = pygame.font.SysFont('arial', 24)
         acctext = font.render("Accuracy: " + str(accuracy) + "%", True, (255, 0, 0))
         acctextRect = acctext.get_rect()
         acctextRect.centerx = screen.get_rect().centerx
@@ -206,7 +206,7 @@ def startgame():
         screen.blit(acctext, acctextRect)
     else:
         pygame.font.init()
-        font = pygame.font.Font(None, 24)
+        font = pygame.font.SysFont('arial', 24)
         text = font.render("Accuracy: "+accuracy+"%", True, (0, 255, 0))
         textRect = text.get_rect()
         textRect.centerx = screen.get_rect().centerx
@@ -215,7 +215,7 @@ def startgame():
         screen.blit(text, textRect)
 
     # add play again text
-    againtext = font.render("Play Again(Press Key P)", True, (255, 255, 0))
+    againtext = font.render("Play Again(Press Key: P)", True, (255, 255, 0))
     againtextRect = againtext.get_rect()
     againtextRect.centerx = screen.get_rect().centerx
     againtextRect.centery = screen.get_rect().centery + 48
@@ -223,13 +223,14 @@ def startgame():
 
 
 startgame()
+
 while True:
     playagain = False
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
-        if event.type == pygame.KEYDOWN:
+        if event.type == pygame.KEYDOWN:    # play again
             if event.key == K_p:
                 playagain = True
                 break
