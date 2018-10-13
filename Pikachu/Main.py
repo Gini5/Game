@@ -1,4 +1,4 @@
-import os, cocos, struct
+import os, cocos
 from cocos.sprite import Sprite
 from classes.Pikachu import Pikachu
 from classes.Block import Block
