@@ -39,6 +39,7 @@ class JumpPikachu(cocos.layer.ColorLayer):
                                  rate = SampleRate,
                                  input = True,
                                  frames_per_buffer = self.numSamples)
+        self.schedule(self.update)
 
     def collide(self):
         # check if pikachu hit the floor
@@ -53,8 +54,16 @@ class JumpPikachu(cocos.layer.ColorLayer):
     def update(self, delta):
         # get audio data of every frame
         audio_data = self.stream.read(self.numSamples)
+        k = max(struct.unpack('1000h', audio_data))
+        self.vbar.scale_x = k / 10000
+        if k > 3000:
+            self.floor.x -= min((k/20), 150) * delta
+        if k > 8000:
+            self.pikachu.jump((k-8000)/1000)
+        self.collide()
 
-
+    def reset(self):
+        self.floor.x = 0
 
 if __name__ == '__main__':
     cocos.director.director.init(caption="Pikachu")
