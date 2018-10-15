@@ -5,9 +5,9 @@ class Block(cocos.sprite.Sprite):
         self.image_anchor = 0, 0
         x, y = position
         if x == 0:
-            # to right and up scale
-            self.scale_x = 4.5      # flat land with length 4.5
-            self.scale_y = 1        # flat land with height 1
+            # self.position is (0,0), to right and up scale
+            self.scale_x = 4.5      # flat land with length 450 pixels
+            self.scale_y = 1        # flat land with height 100 pixels
         else:       # generate block at random
             self.scale_x = 0.5 + random.random()*1.5
             self.scale_y = min(max(y-50+random.random()*100, 50), 300)/100
