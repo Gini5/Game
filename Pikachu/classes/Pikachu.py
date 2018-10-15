@@ -29,4 +29,11 @@ class Pikachu(cocos.sprite.Sprite):
         self.speed += delta*10
         self.y -= self.speed
         if self.y < -85:
+            # if pikachu fall down, restart the game
             self.reset()
+
+    def reset(self):
+        self.parent.reset()
+        self.able_jump = False
+        self.speed = 0
+        self.position = 80, 280
