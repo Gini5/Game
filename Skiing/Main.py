@@ -15,3 +15,11 @@ def create_obstacles(s, e, num=10):
 			obstacle = Obstacle(img_path, location, attribute)
 			obstacles.add(obstacle)
 	return obstacles
+
+def AddObstacles(obstacles0, obstacles1):
+	obstacles = pygame.sprite.Group()
+	for obstacle in obstacles0:
+		obstacles.add(obstacle)
+	for obstacle in obstacles1:
+		obstacles.add(obstacle)
+	return obstacles
