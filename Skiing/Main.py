@@ -43,3 +43,33 @@ def Show_Start_Interface(Demo, width, height):
 				sys.exit()
 			elif event.type == pygame.KEYDOWN:
 				return
+
+def main():
+	pygame.init()
+	# music
+	pygame.mixer.init()
+	pygame.mixer.music.load("./music/bg_music.mp3")
+	pygame.mixer.music.set_volume(0.4)
+	pygame.mixer.music.play(-1)
+	screen = pygame.display.set_mode([640, 640])
+	pygame.display.set_caption('滑雪游戏')
+	# clock
+	clock = pygame.time.Clock()
+	# skier
+	skier = SkierClass()
+	distance = 0
+	# create obstacles
+	obstacles0 = create_obstacles(20, 29)
+	obstacles1 = create_obstacles(10, 19)
+	obstaclesflag = 0
+	obstacles = AddObstacles(obstacles0, obstacles1)
+	# score
+	font = pygame.font.Font(None, 50)
+	score = 0
+	score_text = font.render("Score: "+str(score), 1, (0, 0, 0))
+	# speed
+	speed = [0, 6]
+	Show_Start_Interface(screen, 640, 640)
+
+if __name__ == '__main__':
+	main()
