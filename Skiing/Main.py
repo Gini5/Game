@@ -71,5 +71,23 @@ def main():
 	speed = [0, 6]
 	Show_Start_Interface(screen, 640, 640)
 
+	def update():
+		screen.fill([255, 255, 255])
+		pygame.display.update(obstacles.draw(screen))
+		screen.blit(skier.person, skier.rect)
+		screen.blit(score_text, [10, 10])
+		pygame.display.flip()
+	while True:
+		# control with left/right key
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				sys.exit()
+			if event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_LEFT or event.key == pygame.K_a:
+					speed = skier.turn(-1)
+				elif event.key == pygame.K_RIGHT or event.key == pygame.K_d:
+					speed = skier.turn(1)
+		skier.move()
+
 if __name__ == '__main__':
 	main()
