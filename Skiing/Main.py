@@ -88,6 +88,18 @@ def main():
 				elif event.key == pygame.K_RIGHT or event.key == pygame.K_d:
 					speed = skier.turn(1)
 		skier.move()
+		distance += speed[1]
+		if distance >= 640 and obstaclesflag == 0:
+			obstaclesflag = 1
+			obstacles0 = create_obstacles(20, 29)
+			obstacles = AddObstacles(obstacles0, obstacles1)
+		if distance >= 1280 and obstaclesflag == 1:
+			obstaclesflag = 0
+			distance -= 1280
+			for obstacle in obstacles0:
+				obstacle.location[1] = obstacle.location[1] - 1280
+			obstacles1 = create_obstacles(10, 19)
+			obstacles = AddObstacles(obstacles0, obstacles1)
 
 if __name__ == '__main__':
 	main()
