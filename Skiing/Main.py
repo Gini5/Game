@@ -54,7 +54,7 @@ def main():
 	pygame.mixer.music.set_volume(0.4)
 	pygame.mixer.music.play(-1)
 	screen = pygame.display.set_mode([640, 640])
-	pygame.display.set_caption('滑雪游戏')
+	pygame.display.set_caption('Skiing!')
 	# clock
 	clock = pygame.time.Clock()
 	# skier
