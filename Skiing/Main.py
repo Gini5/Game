@@ -123,5 +123,6 @@ def main():
 		score_text = font.render("Score: " + str(score), 1, (0, 0, 0))
 		update()
 		clock.tick(40)
+
 if __name__ == '__main__':
 	main()
