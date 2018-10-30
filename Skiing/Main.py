@@ -1,5 +1,7 @@
-import pygame, random
+import pygame, random, sys
 from classes.Obstacle import Obstacle
+from classes.Skier import Skier
+from pygame.locals import *
 
 def create_obstacles(s, e, num=10):
 	obstacles = pygame.sprite.Group()
@@ -56,7 +58,7 @@ def main():
 	# clock
 	clock = pygame.time.Clock()
 	# skier
-	skier = SkierClass()
+	skier = Skier()
 	distance = 0
 	# create obstacles
 	obstacles0 = create_obstacles(20, 29)
