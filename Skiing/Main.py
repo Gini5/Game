@@ -102,6 +102,26 @@ def main():
 				obstacle.location[1] = obstacle.location[1] - 1280
 			obstacles1 = create_obstacles(10, 19)
 			obstacles = AddObstacles(obstacles0, obstacles1)
-
+		# for hit detection
+		for obstacle in obstacles:
+			obstacle.move(distance)
+		is_hit = pygame.sprite.spritecollide(skier, obstacles, False)
+		if is_hit:
+			if is_hit[0].attribute == "tree" and not is_hit[0].passed:
+				score -= 50
+				skier.person = pygame.image.load("./images/skier_fall.png")
+				update()
+				# for stand again after hit
+				pygame.time.delay(1000)
+				skier.person = pygame.image.load("./images/skier_forward.png")
+				skier.direction = 0
+				speed = [0, 6]
+				is_hit[0].passed = True
+			elif is_hit[0].attribute == "flag" and not is_hit[0].passed:
+				score += 10
+				obstacles.remove(is_hit[0])
+		score_text = font.render("Score: " + str(score), 1, (0, 0, 0))
+		update()
+		clock.tick(40)
 if __name__ == '__main__':
 	main()
