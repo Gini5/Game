@@ -25,7 +25,7 @@ class myTank(pygame.sprite.Sprite):
         self.protected_mask2 = self.protected_mask.subsurface((48, 0), (48, 48))
         # tank direction
         self.direction_x, self.direction_y = 0, -1
-        # set players postion
+        # set players position
         if player == 1:
             self.rect.left, self.rect.top = 3 + 24 * 8, 3 + 24 * 24
         elif player == 2:
