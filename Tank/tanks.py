@@ -25,3 +25,18 @@ class myTank(pygame.sprite.Sprite):
         self.protected_mask2 = self.protected_mask.subsurface((48, 0), (48, 48))
         # tank direction
         self.direction_x, self.direction_y = 0, -1
+        # set players postion
+        if player == 1:
+            self.rect.left, self.rect.top = 3 + 24 * 8, 3 + 24 * 24
+        elif player == 2:
+            self.rect.left, self.rect.top = 3 + 24 * 16, 3 + 24 * 24
+        else:
+            raise ValueError('myTank class -> player value error.')
+        # speed
+        self.speed = 3
+        # if alive
+        self.being = True
+        # lives
+        self.life = 3
+        # is protected
+        self.protected = False
