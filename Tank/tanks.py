@@ -35,7 +35,7 @@ class myTank(pygame.sprite.Sprite):
         # speed
         self.speed = 3
         # if alive
-        self.being = True
+        self.alive = True
         # lives
         self.life = 3
         # is protected
