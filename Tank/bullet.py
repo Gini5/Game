@@ -26,3 +26,9 @@ class Bullet(pygame.sprite.Sprite):
             self.bullet = pygame.image.load(self.bullets[3])
         else:
             raise ValueError('Bullet class -> direction value error.')
+
+    def move(self):
+        self.rect = self.rect.move(self.speed * self.direction_x, self.speed * self.direction_y)
+        # if touch the border, the bullet is not alive again
+        if (self.rect.top < 3) or (self.rect.bottom > 630 - 3) or (self.rect.left < 3) or (self.rect.right > 630 - 3):
+            self.alive = False
