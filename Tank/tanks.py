@@ -43,3 +43,35 @@ class myTank(pygame.sprite.Sprite):
         self.protected = False
         # bullet
         self.bullet = Bullet()
+
+        def shoot(self):
+            self.bullet.alive = True
+            self.bullet.turn(self.direction_x, self.direction_y)
+            if self.direction_x == 0 and self.direction_y == -1:
+                self.bullet.rect.left = self.rect.left + 20
+                self.bullet.rect.bottom = self.rect.top - 1
+            elif self.direction_x == 0 and self.direction_y == 1:
+                self.bullet.rect.left = self.rect.left + 20
+                self.bullet.rect.top = self.rect.bottom + 1
+            elif self.direction_x == -1 and self.direction_y == 0:
+                self.bullet.rect.right = self.rect.left - 1
+                self.bullet.rect.top = self.rect.top + 20
+            elif self.direction_x == 1 and self.direction_y == 0:
+                self.bullet.rect.left = self.rect.right + 1
+                self.bullet.rect.top = self.rect.top + 20
+            else:
+                raise ValueError('myTank class -> direction value error.')
+            if self.level == 0:
+                self.bullet.speed = 8
+                self.bullet.stronger = False
+            elif self.level == 1:
+                self.bullet.speed = 12
+                self.bullet.stronger = False
+            elif self.level == 2:
+                self.bullet.speed = 12
+                self.bullet.stronger = True
+            elif self.level == 3:
+                self.bullet.speed = 16
+                self.bullet.stronger = True
+            else:
+                raise ValueError('myTank class -> level value error.')
