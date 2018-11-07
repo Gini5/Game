@@ -1,4 +1,5 @@
 import pygame
+from bullet import Bullet
 
 class myTank(pygame.sprite.Sprite):
     def __init__(self, player):
@@ -40,3 +41,5 @@ class myTank(pygame.sprite.Sprite):
         self.life = 3
         # is protected
         self.protected = False
+        # bullet
+        self.bullet = Bullet()
