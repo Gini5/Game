@@ -88,3 +88,30 @@ class myTank(pygame.sprite.Sprite):
             if self.level > 0:
                 self.level -= 1
             self.tank = pygame.image.load(self.tanks[self.level]).convert_alpha()
+
+        def move_up(self, tankGroup, brickGroup, ironGroup, myhome):
+            self.direction_x, self.direction_y = 0, -1
+            # first move
+            self.rect = self.rect.move(self.speed * self.direction_x, self.speed * self.direction_y)
+            self.tank_0 = self.tank.subsurface((0, 0), (48, 48))
+            self.tank_1 = self.tank.subsurface((48, 0), (48, 48))
+            # tell if it can move
+            is_move = True
+            # top of map
+            if self.rect.top < 3:
+                self.rect = self.rect.move(self.speed * -self.direction_x, self.speed * -self.direction_y)
+                is_move = False
+            # collide on rocks
+            if pygame.sprite.spritecollide(self, brickGroup, False, None) or \
+                    pygame.sprite.spritecollide(self, ironGroup, False, None):
+                self.rect = self.rect.move(self.speed * -self.direction_x, self.speed * -self.direction_y)
+                is_move = False
+            # collide other tanks
+            if pygame.sprite.spritecollide(self, tankGroup, False, None):
+                self.rect = self.rect.move(self.speed * -self.direction_x, self.speed * -self.direction_y)
+                is_move = False
+            # my home
+            if pygame.sprite.collide_rect(self, myhome):
+                self.rect = self.rect.move(self.speed * -self.direction_x, self.speed * -self.direction_y)
+                is_move = False
+            return is_move
