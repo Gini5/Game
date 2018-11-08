@@ -75,3 +75,16 @@ class myTank(pygame.sprite.Sprite):
                 self.bullet.stronger = True
             else:
                 raise ValueError('myTank class -> level value error.')
+
+        def up_level(self):
+            if self.level < 3:
+                self.level += 1
+            try:
+                self.tank = pygame.image.load(self.tanks[self.level]).convert_alpha()
+            except:
+                self.tank = pygame.imageload(self.tanks[-1]).convert_alpha()
+
+        def down_level(self):
+            if self.level > 0:
+                self.level -= 1
+            self.tank = pygame.image.load(self.tanks[self.level]).convert_alpha()
