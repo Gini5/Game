@@ -126,3 +126,10 @@ class Map():
 			self.iron.rect.left, self.iron.rect.top = 3 + x * 24, 3 + y * 24
 			self.iron.being = True
 			self.ironGroup.add(self.iron)
+
+	def protect_home(self):
+		for x, y in [(11, 23), (12, 23), (13, 23), (14, 23), (11, 24), (14, 24), (11, 25), (14, 25)]:
+			self.iron = Iron()
+			self.iron.rect.left, self.iron.rect.top = 3 + x * 24, 3 + y * 24
+			self.iron.being = True
+			self.ironGroup.add(self.iron)
