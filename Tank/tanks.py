@@ -321,7 +321,6 @@ class myTank(pygame.sprite.Sprite):
                 is_move = False
             return is_move
 
-
         def reload(self):
             self.tank = pygame.image.load(self.tanks[self.kind][self.color]).convert_alpha()
             self.tank_0 = self.tank.subsurface((0, 48), (48, 48))
