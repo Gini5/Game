@@ -27,3 +27,23 @@ def show_start_interface(screen, width, height):
 					return 1
 				if event.key == pygame.K_2:
 					return 2
+
+def show_end_interface(screen, width, height, is_win):
+	bg_img = pygame.image.load("./images/others/background.png")
+	screen.blit(bg_img, (0, 0))
+	if is_win:
+		font = pygame.font.Font('./font/simkai.ttf', width//10)
+		content = font.render(u'恭喜通关！', True, (255, 0, 0))
+		rect = content.get_rect()
+		rect.midtop = (width/2, height/2)
+		screen.blit(content, rect)
+	else:
+		fail_img = pygame.image.load("./images/others/gameover.png")
+		rect = fail_img.get_rect()
+		rect.midtop = (width/2, height/2)
+		screen.blit(fail_img, rect)
+	pygame.display.update()
+	while True:
+		for event in pygame.event.get():
+			if event.type == QUIT:
+				sys.exit()
