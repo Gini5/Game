@@ -1,3 +1,5 @@
+"This is tank class"
+
 import pygame
 import random
 from bullet import Bullet
