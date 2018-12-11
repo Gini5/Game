@@ -65,3 +65,34 @@ def show_switch_stage(screen, width, height, stage):
 				sys.exit()
 			if event.type == delay_event:
 				return
+
+def main():
+	pygame.init()
+	pygame.mixer.init()
+	screen = pygame.display.set_mode((630, 630))
+	pygame.display.set_caption("坦克大战-公众号: Charles的皮卡丘")
+	# load resources
+	bg_img = pygame.image.load("./images/others/background.png")
+	add_sound = pygame.mixer.Sound("./audios/add.wav")
+	add_sound.set_volume(1)
+	bang_sound = pygame.mixer.Sound("./audios/bang.wav")
+	bang_sound.set_volume(1)
+	blast_sound = pygame.mixer.Sound("./audios/blast.wav")
+	blast_sound.set_volume(1)
+	fire_sound = pygame.mixer.Sound("./audios/fire.wav")
+	fire_sound.set_volume(1)
+	Gunfire_sound = pygame.mixer.Sound("./audios/Gunfire.wav")
+	Gunfire_sound.set_volume(1)
+	hit_sound = pygame.mixer.Sound("./audios/hit.wav")
+	hit_sound.set_volume(1)
+	start_sound = pygame.mixer.Sound("./audios/start.wav")
+	start_sound.set_volume(1)
+	# show start interface
+	num_player = show_start_interface(screen, 630, 630)
+	# sound
+	start_sound.play()
+	# stage
+	stage = 0
+	num_stage = 2
+	is_gameover = False
+	clock = pygame.time.Clock()
